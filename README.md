@@ -161,10 +161,24 @@ PR aberto
 
 ### Skills
 
+**Projeto** (`.github/skills/`):
+
 | Nome | Descrição |
 |---|---|
 | `create-component` | Cria um feature component completo seguindo o padrão Controller/View |
 | `create-tests` | Cria testes unitários para feature components, hooks, serviços e utilitários |
+
+**Caveman** (`.agents/skills/` — instaladas via `npx caveman`):
+
+| Nome | Descrição |
+|---|---|
+| `caveman` | Modo de comunicação ultra-comprimido (~75% menos tokens) |
+| `caveman-commit` | Gerador de mensagens de commit comprimidas no formato Conventional Commits |
+| `caveman-review` | Code review ultra-comprimido com feedback acionável |
+| `caveman-compress` | Comprime arquivos de memória natural para formato caveman |
+| `caveman-help` | Cartão de referência rápida de todos os modos e comandos caveman |
+| `caveman-stats` | Exibe uso real de tokens e economia estimada na sessão atual |
+| `cavecrew` | Guia de decisão para delegar a subagentes caveman especializados |
 
 ## Git Flow
 
