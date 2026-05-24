@@ -12,6 +12,9 @@
   "dryRunTimeoutMinutes": 20,
   "timeoutMS": 10000,
   "ignoreStatic": true,
+  "vitest": {
+    "related": false
+  },
   "reporters": ["html", "clear-text", "progress"],
   "jsonReporter": {
     "fileName": "reports/mutation/mutation.json"
@@ -28,8 +31,7 @@
     "coverage",
     "public",
     "reports",
-    "stryker-tmp",
-    "tests"
+    "stryker-tmp"
   ],
   "mutate": [
     "components/**/controller/**/*.{ts,tsx}",
@@ -59,3 +61,4 @@
     ]
   }
 }
+
