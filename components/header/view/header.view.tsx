@@ -9,7 +9,7 @@ export function HeaderView({
 }: HeaderProps) {
   return (
     <header className="flex items-center justify-between">
-      <Vault size={32} className="hover:opacity-75" onClick={redirecToHome}/>
+      <Vault size={32} data-testid="logo" className="hover:opacity-75" onClick={redirecToHome}/>
 
       <nav className="flex items-center gap-4">
         <Button onClick={handleRedirectToSignIn}>Entrar</Button>
