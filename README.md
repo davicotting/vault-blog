@@ -16,9 +16,13 @@ Vault Blog é uma plataforma de blog pessoal com foco em arquitetura limpa e man
 | UI Primitives | [Base UI](https://base-ui.com/) |
 | Icons | [Lucide React](https://lucide.dev/) |
 | Forms | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) |
+| Data Fetching | [TanStack Query v5](https://tanstack.com/query) + [Axios](https://axios-http.com/) |
+| State Management | [Zustand](https://zustand-demo.pmnd.rs/) |
+| Carousel | [Embla Carousel](https://www.embla-carousel.com/) |
 | Theming | [next-themes](https://github.com/pacocoursey/next-themes) |
 | CSS Variants | [class-variance-authority](https://cva.style/) + [tailwind-merge](https://github.com/dcastil/tailwind-merge) |
-| Testing | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) |
+| Environment | [dotenv](https://github.com/motdotla/dotenv) + [Zod](https://zod.dev/) |
+| Testing | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) + [Stryker](https://stryker-mutator.io/) |
 | Git Hooks | [Husky](https://typicode.github.io/husky/) |
 
 ## Getting Started
@@ -42,6 +46,8 @@ Acesse [http://localhost:3000](http://localhost:3000).
 | `npm run lint` | Executa o ESLint |
 | `npm test` | Executa os testes unitários |
 | `npm run test:watch` | Executa os testes em modo watch |
+| `npm run test:coverage` | Executa os testes com relatório de cobertura |
+| `npm run test:mutation` | Executa os testes de mutação com Stryker |
 
 ## Project Structure
 
@@ -80,27 +86,47 @@ import { cn } from "@/lib/utils";
 Os testes ficam em `tests/` espelhando a estrutura do projeto. Arquivos de teste usam sufixo `.spec.tsx`.
 
 ```bash
-npm test             # executa todos os testes
-npm run test:watch   # modo watch
+npm test                  # executa todos os testes
+npm run test:watch        # modo watch
+npm run test:coverage     # cobertura de código
 ```
 
-O Husky executa os testes automaticamente no pre-commit — commits só passam se os testes passarem.
+O Husky executa `npm run test:coverage` automaticamente no pre-commit — commits só passam se os testes passarem.
+
+### Mutation Testing
+
+O projeto usa [Stryker](https://stryker-mutator.io/) para testes de mutação, garantindo a qualidade dos testes.
+
+```bash
+npm run test:mutation
+```
+
+O Stryker opera em modo incremental — apenas os mutantes afetados por mudanças são re-testados, usando o cache em `reports/mutation/stryker-incremental.json`.
 
 ## CI/CD
 
-O pipeline de CI é definido em `.github/workflows/workflow.ymal` e executa em todos os Pull Requests.
+O pipeline de CI é definido em `.github/workflows/ci.yml` e executa em todos os Pull Requests.
 
 ```
 PR aberto
     │
     ▼
-[test] — ubuntu-latest
+[unit-tests] — ubuntu-latest
   - Setup Node.js 20 (cache npm)
   - npm ci
-  - npm test -- --run
+  - npm run test:coverage
+    │
+    ▼ (apenas PRs para develop ou main)
+[mutation-tests] — ubuntu-latest
+  - Setup Node.js 20 (cache npm)
+  - Restore Stryker incremental cache
+  - npm ci
+  - npm run test:mutation
 ```
 
-**Cache:** dependências npm são cacheadas pelo `actions/setup-node`.
+**Cache:**
+- Dependências npm cacheadas pelo `actions/setup-node`
+- Cache incremental do Stryker: chave `stryker-{base_ref}-{sha}`, com fallback por `base_ref`
 
 ## Copilot Customizations
 
