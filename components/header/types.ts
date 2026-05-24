@@ -1,4 +1,5 @@
 export interface HeaderProps {
     handleRedirectToSignIn: () => void;
     handleRedirectToSignUp: () => void;
+    redirecToHome: () => void;
 }

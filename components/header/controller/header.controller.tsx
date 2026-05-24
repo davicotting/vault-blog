@@ -1,18 +1,27 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { HeaderView } from "../view/header.view";
 import { RoutesUrls } from "@/app/utils/enums/routes-url";
 
 export function HeaderController() {
+  const { push } = useRouter();
+
   function handleRedirectToSignIn() {
-    redirect(RoutesUrls.SIGN_IN);
+    push(RoutesUrls.SIGN_IN);
   }
 
   function handleRedirectToSignUp() {
-    redirect(RoutesUrls.SIGN_UP);
+    push(RoutesUrls.SIGN_UP);
   }
-  
+
+  function handleRedirectToHome() {
+    push(RoutesUrls.HOME);
+  }
+
   return (
     <HeaderView
+      redirecToHome={handleRedirectToHome}
       handleRedirectToSignIn={handleRedirectToSignIn}
       handleRedirectToSignUp={handleRedirectToSignUp}
     />

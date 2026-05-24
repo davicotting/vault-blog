@@ -20,3 +20,11 @@ Sempre use `npm`. Nunca use `pnpm` ou `yarn`.
 - **Variantes CSS**: class-variance-authority + tailwind-merge
 - **Testes**: Vitest + Testing Library
 - **Git hooks**: Husky
+
+## Componentes Shadcn
+
+Se um componente do Shadcn for necessário e não existir em `components/ui/`, instale-o antes de usá-lo:
+
+```bash
+npx shadcn@latest add <nome-do-componente>
+```

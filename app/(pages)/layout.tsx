@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -40,14 +42,15 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {" "}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        
+          <div className="flex flex-col h-screen p-12">
+            <Header />
+            <main className="flex flex-col flex-1 min-h-0">
+              {children}
+            </main>
+            <Footer />
+          </div>
+      
       </body>
     </html>
   );
