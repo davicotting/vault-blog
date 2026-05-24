@@ -18,11 +18,13 @@ The architecture follows a strict **Controller/View** pattern for all feature co
 | UI Primitives | [Base UI](https://base-ui.com) + [Shadcn](https://ui.shadcn.com) |
 | Icons | [Lucide React](https://lucide.dev) |
 | Forms | [React Hook Form](https://react-hook-form.com) + [Zod](https://zod.dev) |
+| Data Fetching | [TanStack Query v5](https://tanstack.com/query) + [Axios](https://axios-http.com) |
 | State Management | [Zustand](https://zustand-demo.pmnd.rs) |
 | Carousel | [Embla Carousel](https://www.embla-carousel.com) |
 | Theming | [next-themes](https://github.com/pacocoursey/next-themes) |
 | CSS Variants | [class-variance-authority](https://cva.style) + [tailwind-merge](https://github.com/dcastil/tailwind-merge) |
-| Testing | [Vitest](https://vitest.dev) + [Testing Library](https://testing-library.com) |
+| Environment | [dotenv](https://github.com/motdotla/dotenv) + [Zod](https://zod.dev) schema validation |
+| Testing | [Vitest](https://vitest.dev) + [Testing Library](https://testing-library.com) + [Stryker](https://stryker-mutator.io) |
 | Git Hooks | [Husky](https://typicode.github.io/husky) |
 
 ## Getting Started
@@ -47,8 +49,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `npm run build` | Build for production |
 | `npm run start` | Start the production server |
 | `npm run lint` | Run ESLint |
-| `npm test` | Run tests once |
-| `npm run test:watch` | Run tests in watch mode |
+| `npm test` | Run tests in watch mode |
+| `npm run test:coverage` | Run tests with coverage report |
+| `npm run test:mutation` | Run mutation tests with Stryker |
 
 ## Project Structure
 
@@ -102,10 +105,44 @@ Path aliases are configured via `@/` pointing to the project root. Relative impo
 Tests live in `tests/` and mirror the project structure. Each test file uses the `.spec.tsx` suffix.
 
 ```bash
-npm test
+npm run test:coverage
 ```
 
 The Husky pre-commit hook runs all tests automatically before each commit. Failing tests block the commit.
+
+### Mutation Testing
+
+[Stryker](https://stryker-mutator.io) is used for mutation testing to validate test suite quality:
+
+```bash
+npm run test:mutation
+```
+
+Stryker uses an incremental cache (`reports/mutation/stryker-incremental.json`) so only changed files are re-mutated on subsequent runs.
+
+## CI/CD
+
+Every pull request triggers a GitHub Actions pipeline with two sequential jobs:
+
+```
+Pull Request
+    │
+    ▼
+┌─────────────┐
+│ Unit Tests  │  Runs on all PRs
+│ + Coverage  │  Node 20 + npm cache
+└──────┬──────┘
+       │ (on success)
+       ▼
+┌─────────────────┐
+│ Mutation Tests  │  Runs only on PRs targeting develop or main
+│    (Stryker)    │  Stryker incremental cache restored per base branch
+└─────────────────┘
+```
+
+**Caching strategy:**
+- `actions/setup-node` caches `npm` dependencies keyed by `package-lock.json`, avoiding a full `npm ci` on every run.
+- Stryker's incremental cache is persisted via `actions/cache`, keyed by `stryker-{base_ref}-{sha}` with a fallback to `stryker-{base_ref}-`, so previously analyzed mutations are reused across PRs targeting the same branch.
 
 ## Git Flow
 
