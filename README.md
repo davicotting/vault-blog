@@ -1,116 +1,180 @@
 # Vault Blog
 
-A personal blog and portfolio platform built with Next.js App Router. Showcases posts across categories like Dev, Career, and Life — with a live activity panel showing what the author is coding or listening to in real time.
+Blog pessoal construído com Next.js App Router, seguindo arquitetura Controller/View e tipagem estrita com TypeScript.
 
 ## Concept
 
-Vault Blog is more than a blog: it's a window into the author's day-to-day developer life. Visitors can browse posts by topic, search by keyword, and see a live activity card that reflects the author's current status — whether they're deep in a codebase or listening to Pink Floyd.
-
-The architecture follows a strict **Controller/View** pattern for all feature components, keeping business logic fully decoupled from rendering.
+Vault Blog é uma plataforma de blog pessoal com foco em arquitetura limpa e manutenibilidade. O projeto adota o padrão Controller/View para separação de responsabilidades nos componentes, garantindo que lógica de negócio e renderização nunca se misturem. A estrutura de pastas reflete diretamente as responsabilidades de cada módulo, facilitando navegação e testes.
 
 ## Tech Stack
 
 | Category | Technology |
 |---|---|
-| Framework | [Next.js 16](https://nextjs.org) — App Router |
-| Language | [TypeScript](https://www.typescriptlang.org) |
-| Styling | [Tailwind CSS v4](https://tailwindcss.com) |
-| UI Primitives | [Base UI](https://base-ui.com) + [Shadcn](https://ui.shadcn.com) |
-| Icons | [Lucide React](https://lucide.dev) |
-| Forms | [React Hook Form](https://react-hook-form.com) + [Zod](https://zod.dev) |
-| State Management | [Zustand](https://zustand-demo.pmnd.rs) |
-| Carousel | [Embla Carousel](https://www.embla-carousel.com) |
+| Framework | [Next.js 16](https://nextjs.org/) |
+| Language | [TypeScript](https://www.typescriptlang.org/) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com/) |
+| UI Primitives | [Base UI](https://base-ui.com/) |
+| Icons | [Lucide React](https://lucide.dev/) |
+| Forms | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) |
+| Data Fetching | [TanStack Query v5](https://tanstack.com/query) + [Axios](https://axios-http.com/) |
+| State Management | [Zustand](https://zustand-demo.pmnd.rs/) |
+| Carousel | [Embla Carousel](https://www.embla-carousel.com/) |
 | Theming | [next-themes](https://github.com/pacocoursey/next-themes) |
-| CSS Variants | [class-variance-authority](https://cva.style) + [tailwind-merge](https://github.com/dcastil/tailwind-merge) |
-| Testing | [Vitest](https://vitest.dev) + [Testing Library](https://testing-library.com) |
-| Git Hooks | [Husky](https://typicode.github.io/husky) |
+| CSS Variants | [class-variance-authority](https://cva.style/) + [tailwind-merge](https://github.com/dcastil/tailwind-merge) |
+| Environment | [dotenv](https://github.com/motdotla/dotenv) + [Zod](https://zod.dev/) |
+| Testing | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) + [Stryker](https://stryker-mutator.io/) |
+| Git Hooks | [Husky](https://typicode.github.io/husky/) |
 
 ## Getting Started
 
-**Prerequisites:** Node.js 18+ and npm.
+**Pré-requisitos:** Node.js 20+
 
 ```bash
-# Install dependencies
 npm install
-
-# Start the development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Acesse [http://localhost:3000](http://localhost:3000).
 
 ## Available Scripts
 
 | Script | Description |
 |---|---|
-| `npm run dev` | Start the development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start the production server |
-| `npm run lint` | Run ESLint |
-| `npm test` | Run tests once |
-| `npm run test:watch` | Run tests in watch mode |
+| `npm run dev` | Inicia o servidor de desenvolvimento |
+| `npm run build` | Gera o build de produção |
+| `npm start` | Inicia o servidor de produção |
+| `npm run lint` | Executa o ESLint |
+| `npm test` | Executa os testes unitários |
+| `npm run test:watch` | Executa os testes em modo watch |
+| `npm run test:coverage` | Executa os testes com relatório de cobertura |
+| `npm run test:mutation` | Executa os testes de mutação com Stryker |
 
 ## Project Structure
 
 ```
-├── app/
-│   ├── (pages)/               # Public pages with shared Header + Footer layout
-│   │   ├── layout.tsx
-│   │   ├── page.tsx           # / — homepage with Hero
-│   │   ├── globals.css
-│   │   └── posts/
-│   │       └── page.tsx       # /posts — post listing with search and filters
-│   ├── (auth)/                # Auth pages with isolated layout
-│   │   ├── sign-in/
-│   │   └── sign-up/
-│   ├── config/                # Global config and environment
-│   ├── context/               # React Context providers
-│   ├── hooks/                 # UI-level custom hooks
-│   ├── services/              # External API calls
-│   └── utils/
-│       ├── enums/             # Typed constants (routes, image URLs, activity types)
-│       └── mocks/             # Static mock data (posts, topics, activity)
-│
-├── components/
-│   ├── ui/                    # Primitive components (Button, Badge, Carousel, etc.)
-│   └── [feature]/             # Feature components following Controller/View pattern
-│       ├── index.tsx          # Public export
-│       ├── types.ts
-│       ├── controller/        # Logic, handlers, data fetching
-│       └── view/              # Pure rendering, receives everything via props
-│
-├── lib/
-│   └── utils.ts               # Pure utility functions (cn, etc.)
-│
-└── tests/                     # Mirrors the src structure
-    ├── app/
-    └── components/
+├── app/                    # App Router do Next.js
+│   ├── (pages)/            # Páginas e layouts
+│   ├── config/             # Configurações globais (env, constantes)
+│   ├── context/            # React Context providers
+│   ├── hooks/              # Custom hooks de UI
+│   ├── services/           # Funções de acesso a APIs externas
+│   └── utils/              # Enums e mocks
+├── components/             # Componentes React
+│   ├── ui/                 # Átomos sem lógica de negócio
+│   └── [feature]/          # Componentes com padrão Controller/View
+├── lib/                    # Funções utilitárias puras
+└── tests/                  # Testes — espelham a estrutura do projeto
 ```
 
 ## Architecture
 
-All feature components follow the **Controller/View** pattern:
+O projeto segue o padrão **Controller/View** para todos os componentes de feature:
 
-- **Controller** (`[feature].controller.tsx`) — owns state, handlers, and service calls. Never renders HTML directly.
-- **View** (`[feature].view.tsx`) — purely presentational. Receives everything via props. Zero logic.
-- **`index.tsx`** — single public export point for the component.
+- **Controller** (`controller/[feature].controller.tsx`): contém lógica, handlers e consumo de serviços. Nunca renderiza HTML diretamente.
+- **View** (`view/[feature].view.tsx`): apenas renderização via props. Zero lógica própria.
+- **index.tsx**: único ponto de export público do componente.
 
-Path aliases are configured via `@/` pointing to the project root. Relative imports (`../../`) are not allowed.
+Path aliases: use sempre `@/` — nunca imports relativos com `../../`.
+
+```ts
+import { Header } from "@/components/header";
+import { cn } from "@/lib/utils";
+```
 
 ## Testing
 
-Tests live in `tests/` and mirror the project structure. Each test file uses the `.spec.tsx` suffix.
+Os testes ficam em `tests/` espelhando a estrutura do projeto. Arquivos de teste usam sufixo `.spec.tsx`.
 
 ```bash
-npm test
+npm test                  # executa todos os testes
+npm run test:watch        # modo watch
+npm run test:coverage     # cobertura de código
 ```
 
-The Husky pre-commit hook runs all tests automatically before each commit. Failing tests block the commit.
+O Husky executa `npm run test:coverage` automaticamente no pre-commit — commits só passam se os testes passarem.
+
+### Mutation Testing
+
+O projeto usa [Stryker](https://stryker-mutator.io/) para testes de mutação, garantindo a qualidade dos testes.
+
+```bash
+npm run test:mutation
+```
+
+O Stryker opera em modo incremental — apenas os mutantes afetados por mudanças são re-testados, usando o cache em `reports/mutation/stryker-incremental.json`.
+
+## CI/CD
+
+O pipeline de CI é definido em `.github/workflows/ci.yml` e executa em todos os Pull Requests.
+
+```
+PR aberto
+    │
+    ▼
+[unit-tests] — ubuntu-latest
+  - Setup Node.js 20 (cache npm)
+  - npm ci
+  - npm run test:coverage
+    │
+    ▼ (apenas PRs para develop ou main)
+[mutation-tests] — ubuntu-latest
+  - Setup Node.js 20 (cache npm)
+  - Restore Stryker incremental cache
+  - npm ci
+  - npm run test:mutation
+```
+
+**Cache:**
+- Dependências npm cacheadas pelo `actions/setup-node`
+- Cache incremental do Stryker: chave `stryker-{base_ref}-{sha}`, com fallback por `base_ref`
+
+## Copilot Customizations
+
+### Instructions
+
+| Arquivo | applyTo | Descrição |
+|---|---|---|
+| `architecture.instructions.md` | `**` | Estrutura de pastas e padrão Controller/View |
+| `code-style.instructions.md` | `**` | Proíbe comentários no código |
+| `components.instructions.md` | `components/**,app/**` | Regras para criação de componentes |
+| `errors.instructions.md` | `**` | Tratamento de erros e validação antes de entregar |
+| `functions.instructions.md` | `**` | `function` vs `const arrow`, separação de hooks |
+| `git-flow.instructions.md` | `**` | Branches, commits e criação de PRs |
+| `readme.instructions.md` | `README.md` | Modelo obrigatório de README |
+| `stack.instructions.md` | `**` | Package manager e tecnologias da stack |
+| `typescript.instructions.md` | `**/*.ts,**/*.tsx` | Convenções TypeScript |
+
+### Prompts
+
+| Arquivo | Descrição |
+|---|---|
+| `create-pr.prompt.md` | Cria um Pull Request seguindo o git flow do projeto |
+| `update-readme.prompt.md` | Reescreve o README lendo as fontes do projeto |
+
+### Agentes
+
+| Arquivo | Descrição | Tools |
+|---|---|---|
+| `architecture-guard.agent.md` | Revisa código em busca de violações arquiteturais | `read`, `search` |
+| `customization-architect.agent.md` | Decide e cria o primitivo de customização correto | `read`, `search`, `edit`, `ask-questions` |
+| `customization-auditor.agent.md` | Audita todos os primitivos e verifica classificação correta | `read`, `search` |
+
+### Skills
+
+| Nome | Descrição |
+|---|---|
+| `create-component` | Cria um feature component completo seguindo o padrão Controller/View |
+| `create-tests` | Cria testes unitários para feature components, hooks, serviços e utilitários |
 
 ## Git Flow
 
-- Default base branch: `develop`
-- Branch naming follows the commit type: `feat/`, `fix/`, `refactor/`, etc.
-- PRs target `develop` unless `main` is explicitly requested.
-- Commits follow [Conventional Commits](https://www.conventionalcommits.org): `feat: ...`, `fix: ...`, `refactor: ...`
+Cada tarefa tem sua própria branch a partir de `develop`:
 
+```bash
+git checkout develop
+git checkout -b feat/<nome-da-tarefa>
+```
+
+**Commits:** `feat: ...`, `fix: ...`, `refactor: ...`, `test: ...`, `docs: ...` — sem escopo entre parênteses, sem `Co-Authored-By`.
+
+**Pull Requests:** base padrão é `develop`. Use `gh pr create` para criar via CLI. O corpo do PR deve ser escrito em português e incluir o que foi feito, arquivos alterados e observações relevantes.
